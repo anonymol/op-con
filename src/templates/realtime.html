@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Sentiment Analysis in Real Time</title>
+    <link href="/static/style.css" rel="stylesheet" type="text/css" media="screen"/>
+  </head>
+  
+  <!--Load the AJAX API-->
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="/static/jquery-1.7.2.min.js"></script>
+  
+  <script type="text/javascript">
+    function change_icon() {
+    $(".icon-search").hide();
+    $("#loading").show();
+    }
+  </script>
+  
+  <script type="text/javascript">
+    
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
+      
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(createCharts);
+    
+    function createCharts() {
+    drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
+    drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
+    drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
+    }
+    
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart(destino, value1, value2, value3) {
+    
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Sentiment');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+    ['Positive', value1],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['', 0],
+    ['Neutral', value2],
+    ['Negative', value3],
+    ]);
+    
+    // Set chart options
+    var options = {
+    'title':'',
+    'is3D':true,
+    'width':343,
+    'height':200,
+    'backgroundColor': { 'fill': "#BEBEBE" }
+    };
+    
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById(destino));
+    chart.draw(data, options);
+    }
+  </script>
+  
+  
+  
+  <body>
+    <div id="titulo" style="display: none;">
+      Titulo
+    </div>
+    
+    <div id="div-busca" class="busca-realtime">
+      <form action="/realtime" method="get">
+	<input id="search" name="q" type="text" placeholder="Movies, Events, People..."
+	       style="margin-top: 7px; height: 36px;" value="{{query}}">
+	<button class="btn btn-large btn-inverse" id="artist_submit" type="submit" 
+		onclick="change_icon()" style="margin-top: 7px;">
+	  <i class="icon-search"></i>
+	  <img id="loading" src="static/imgs/face-loader.gif" style="display: none;">
+	</button>
+      </form>
+    </div>
+    
+    <br style="clear: both;" />
+    <br style="clear: both;" />
+    
+
+
+
+
+
+
+
+
+    
+    
+    <div id="lateral-esquerda">
+      
+      <div id="top_list">
+	<table>	
+	  <tr><td colspan=3 align="center" class="subtitulo">Top Words</td></tr>
+	  {% for word in top_words %}
+	  <tr>
+	    <td width="110px" style="max-width: 100px;">{{ word.0 }}</td>
+	    <td width="120px" style="max-width: 120px">
+	      <div class="barra" style="width: 10px">&nbsp;</div>
+	    </td>
+	    <td width="20px" style="max-width:20px; overflow: hidden; text-align: right;">{{ word.1 }}</td>
+	  </tr>
+	  {% endfor %}
+	</table>
+      </div>  
+      
+      <br />
+      
+      <div id="top_list">
+	<table>	
+	  <tr><td colspan=3 align="center" class="subtitulo">Top Hashtag</td></tr>
+	  {% for ht in top_hashtags %}
+	  <tr>
+	    <td width="110px" style="max-width: 100px;">{{ ht.0 }}</td>
+	    <td width="120px" style="max-width: 120px">
+	      <div class="barra" style="width: 10px">&nbsp;</div>
+	    </td>
+	    <td width="20px" style="max-width:20px; overflow: hidden; text-align: right;">{{ ht.1 }}</td>
+	  </tr>
+	  {% endfor %}
+	</table>
+      </div>
+      
+      <br />
+      
+      <div id="top_list">
+	<table>	
+	  <tr><td colspan=3 align="center" class="subtitulo">Top Users</td></tr>
+	  {% for user in top_users %}
+	  <tr>
+	    <td width="110px" style="max-width: 100px;">{{ user.0 }}</td>
+	    <td width="120px" style="max-width: 120px">
+	      <div class="barra" style="width: 10px">&nbsp;</div>
+	    </td>
+	    <td width="20px" style="max-width:20px; overflow: hidden; text-align: right;">{{ user.1 }}</td>
+	  </tr>
+	  {% endfor %}
+	</table>
+      </div> 
+    </div>
+    
+    <div id="centro">
+      <div id="titulo-centro" class="subtitulo">Tweets</div>
+      <div id="nada" style="text-align: center; color: #666; padding: 10px; background: #ebebeb; 
+      			    margin-bottom: 31px; display: none;">Modifique os filtros!</div>
+      
+      <ul id="feed">
+      	{% for tweet, a1, a2, a3 in tweets %}
+      	<!-- <span title="{{a1.prob}}">{{ a1.label }}</span> 
+             <span title="{{a2.prob}}">{{ a2.label }}</span> 
+             <span title="{{a3.prob}}">{{ a3.label }}</span> <br style="clear: both;"/>-->
+        {% if a2.prob >= 0 or a2.prob <= 0 %}
+					 <li id="tweet" {% if forloop.counter > 50 %} class="esconder-excesso" {% endif %}>
+	  
+	  <div id="icon" class="icon_{{a2.label}}" title="{{a1.prob}}|{{a2.prob}}|{{a3.prob}}"></div>
+	  
+	  <div class="foto">
+	    <img src="{{tweet.image}}" style="width: 48px; height: 48px;"></img>
+	  </div>
+	  
+	  <div class="texto">
+	    {{ tweet.text }}<br/>
+	    @<a href="http://www.google.com" target="_blank">{{ tweet.user }}</a> :: {{ tweet.date }}
+	  </div>
+</li>
+{% endif %}
+{% endfor %}
+</ul>
+
+<div style="text-align: center;">
+  <button id="mais">See more?</button>
+</div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+		
+  if ($('ul#feed li#tweet:last-child').is('li:visible'))
+  $('button#mais').hide();
+  
+  $('div#top_list table tr td').each(function(index) {
+  
+  var max_size = $(this).parent().parent().children(':first').next().children(':last').text();
+  var current_size = $(this).next().text();
+  
+  var size = (110*current_size/max_size) + 10;
+				
+  $(this).children('div.barra').css('width', size);
+  });
+  
+  $('#centro').bind('heightChange', function(){
+  $('#nada').hide();
+  if ($('#centro').height() < 100)
+		              $('#nada').show();
+		              else
+		              $('#nada').hide();
+			      });
+			      
+			      $('button#mais').click(function() {
+			      var qtd = 0;
+			      
+			      $('ul#feed li#tweet').each(function(index) {
+			      if ($(this).hasClass('esconder-excesso') && qtd < 20 ) {
+										$(this).removeClass('esconder-excesso');
+										qtd++;
+										}
+										
+										if (!$('ul#feed li#tweet:last-child').hasClass('esconder-excesso'))
+										$('button#mais').hide();					
+										});
+										
+										$("#centro").trigger('heightChange');
+										});
+										
+										$('input#chk_pos').click(function() {
+										$('ul#feed li').children('div#icon').each(function(index) {
+										if ($(this).hasClass('icon_pos')) {
+										if ($('input#chk_pos').is(':checked'))
+										$(this).parent().css('display', 'block');
+										else
+										$(this).parent().css('display', 'none');
+										
+										}
+										});
+										$("#centro").trigger('heightChange');
+										});
+										
+										$('input#chk_neutral').click(function() {
+										$('ul#feed li').children('div#icon').each(function(index) {
+										if ($(this).hasClass('icon_neutral')) {
+										if ($('input#chk_neutral').is(':checked'))
+										$(this).parent().css('display', 'block');
+										else
+										$(this).parent().css('display', 'none');
+										}
+										});
+										$("#centro").trigger('heightChange');
+										});
+										
+										$('input#chk_neg').click(function() {
+										$('ul#feed li').children('div#icon').each(function(index) {
+										if ($(this).hasClass('icon_neg')) {
+										if ($('input#chk_neg').is(':checked'))
+										$(this).parent().css('display', 'block');
+										else
+										$(this).parent().css('display', 'none');
+										}
+										});
+										$("#centro").trigger('heightChange');
+										});
+										
+										});
+										</script>
+
+
+
+<div id="lateral-direita">
+  <span style="font-weight: bold; color: #AA142B;">Actual Size: </span> {{size}} ({{tweets|length}}) 
+  <br />            
+  <br/>
+  <span style="font-weight: bold; color: #AA142B;"> Filters: </span> <br/>
+  
+  <input type="checkbox" id="chk_pos" value="pos" checked /> 
+  <span class="blabla"> Positive 
+    <img src="/static/imgs/icon_pos.png" style="width: 20px; height: 20px; position: absolute; padding:7px 7px 7px 12px"></img> 
+  </span> <br />
+  
+  <input type="checkbox" id="chk_neutral" value="neutral" checked /> 
+  <span class="blabla"> Neutral 
+    <img src="/static/imgs/icon_neutral.png" style="width: 20px; height: 20px; position: absolute; padding:7px 7px 7px 17px"></img> 
+  </span> <br />
+  
+  <input type="checkbox" id="chk_neg" value="neg" checked /> 
+  <span class="blabla"> Negative 
+    <img src="/static/imgs/icon_neg.png" style="width: 20px; height: 20px; position: absolute; padding:7px"></img> 
+  </span> <br />
+</div>
+
+</body>
+</html>
