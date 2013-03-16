@@ -27,8 +27,11 @@
     
     function createCharts() {
     drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
-    drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
-    drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
+    console.log('ANM-HERE: Pos'+{{stats.0.pos}}+'Neutral: '+{{stats.0.neutral}}+'Neg: '+{{stats.0.neg}});
+    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}});
+    //console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
+    //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
+    //drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
     }
     
     // Callback that creates and populates a data table,
@@ -42,26 +45,13 @@
     data.addColumn('number', 'Slices');
     data.addRows([
     ['Positive', value1],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
-    ['', 0],
     ['Neutral', value2],
     ['Negative', value3],
     ]);
     
     // Set chart options
     var options = {
-    'title':'',
+    'title':'Mood Distribution',
     'is3D':true,
     'width':343,
     'height':200,
@@ -294,6 +284,9 @@
     <img src="/static/imgs/icon_neg.png" style="width: 20px; height: 20px; position: absolute; padding:7px"></img> 
   </span> <br />
 </div>
+<div id="chart_div1"></div>
+<div id="chart_div2"></div>
+<div id="chart_div3"></div>
 
 </body>
 </html>
