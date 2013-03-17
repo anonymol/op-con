@@ -14,6 +14,7 @@ def parseMined(timeDelta, unit):
   neg={}
   neu={}
   compiled=re.compile(r'\'date\': datetime.datetime\(([0-9]*), ([0-9]*), ([0-9]*), ([0-9]*), ([0-9]*), ([0-9]*).*\'label\': \'([a-z]*)' , re.IGNORECASE)
+  fin=[]
 
   for line in f.readlines():
       match=compiled.findall( line )
@@ -36,6 +37,29 @@ def parseMined(timeDelta, unit):
 	else:
 	  retdt[key]=1
   f.close()
-  return pos,neg,neu
-
+  #return pos,neg,neu
+  fin.append(['time','pos','neg','neu'])
+  for key in pos.keys():
+    posv=pos[key]
+    negv=0
+    neuv=0
+    if key in neg.keys():
+      negv=neg[key]
+    if key in neu.keys():
+      neuv=neu[key]
+    fin.append([key,posv,negv,neuv])
+  for key in neg.keys():
+    posv=0
+    negv=neg[key]
+    neuv=0
+    if key in neu.keys():
+      neuv=neu[key]
+    fin.append([key,posv,negv,neuv])
+  for key in neu.keys():
+    posv=0
+    negv=0
+    neuv=neu[key]
+    fin.append([key,posv,negv,neuv])
+  return fin
+    
 print parseMined(3600,'hours');
