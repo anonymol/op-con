@@ -104,7 +104,7 @@ def analysis_sentimental(tweets_list, query, number=2, d1=True, d2=True, d3=True
 
 def analyse_affin(text):
   # AFINN-111 is as of June 2011 the most recent version of AFINN
-  filenameAFINN = '/media/110GBPart/SOURCE/twittermining/op-con/src/processing/AFINN111.txt'
+  filenameAFINN = 'AFINN111.txt'
   afinn = dict(map(lambda (w, s): (w, int(s)), [ ws.strip().split('\t') for ws in open(filenameAFINN) ]))
 
   # Word splitter pattern
