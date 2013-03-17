@@ -3,6 +3,7 @@
 import util
 from realtime import control
 import processing
+import minerSamsungParser as m1
 
 def home(request):
     if request.method == 'GET':
@@ -10,7 +11,10 @@ def home(request):
 
 def second(request):
     if request.method == 'GET':
-        return util.request.render('second.html', {}, request)
+      www=m1.parseMined(3600,'hours')
+      return util.request.render('second.html', www, request)
+    else:
+      return util.request.print_html('No query sent!')
 
 def realtime(request):
     if request.method == 'GET':

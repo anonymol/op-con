@@ -5,75 +5,65 @@
   </head>
   
   <!--Load the AJAX API-->
-<!--
+
+  <script type="text/javascript">
+    function change_icon() {
+    $(".icon-search").hide();
+    $("#loading").show();
+    }
+    </script>
+    
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="/static/jquery-1.7.2.min.js"></script>
+    
+    
     <script type="text/javascript">
-      google.load("visualization", "1.0", {packages:["corechart"]});
+          // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
       google.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-      [Hours', 'Positive', 'Negative', 'Neutral'],
-      ['1','37','40', '23'],
-          ['2', '34','11', '55'],
-          ['3','57','19', '24'],
-          ['4',  '63', '14', '23']
-        ]);
-
+        var data = google.visualization.arrayToDataTable(
+       /*
+      [['time', 'pos', 'neg', 'neu'], ['<106 hours ago', 1, 0, 0], ['<111 hours ago', 1, 0, 0], ['<115 hours ago', 1, 0, 1], ['<124 hours ago', 1, 0, 0], ['<14 hours ago', 2, 0, 0], ['<140 hours ago', 2, 0, 2], ['<141 hours ago', 2, 0, 0], ['<157 hours ago', 1, 0, 0], ['<16 hours ago', 2, 0, 0], ['<161 hours ago', 1, 0, 1], ['<17 hours ago', 2, 0, 0], ['<18 hours ago', 1, 0, 1], ['<19 hours ago', 1, 0, 0], ['<21 hours ago', 2, 0, 0], ['<23 hours ago', 1, 0, 0], ['<25 hours ago', 1, 0, 1], ['<26 hours ago', 1, 0, 0], ['<31 hours ago', 2, 0, 1], ['<35 hours ago', 4, 0, 5], ['<39 hours ago', 1, 0, 3], ['<4 hours ago', 4, 0, 2], ['<41 hours ago', 1, 2, 1], ['<43 hours ago', 3, 0, 4], ['<44 hours ago', 3, 2, 6], ['<45 hours ago', 6, 3, 5], ['<46 hours ago', 4, 0, 4], ['<47 hours ago', 9, 1, 5], ['<48 hours ago', 9, 0, 3], ['<49 hours ago', 7, 2, 3], ['<50 hours ago', 7, 5, 7], ['<51 hours ago', 11, 4, 11], ['<52 hours ago', 10, 1, 11], ['<53 hours ago', 7, 3, 5], ['<54 hours ago', 5, 2, 6], ['<55 hours ago', 5, 3, 6], [
+'<56 hours ago', 5, 6, 1], ['<57 hours ago', 27, 11, 15], ['<58 hours ago', 28, 5, 25], ['<59 hours ago', 23, 2, 15], ['<60 hours ago', 83, 17, 74], ['<61 hours ago', 95, 32, 95], ['<62 hours ago', 3, 2, 13], ['<63 hours ago', 4, 0, 7], ['<64 hours ago', 2, 0, 1], ['<67 hours ago', 2, 1, 1], ['<68 hours ago', 2, 1, 2], ['<69 hours ago', 2, 0, 1], ['<70 hours ago', 2, 0, 2], ['<71 hours ago', 3, 0, 3], ['<72 hours ago', 4, 0, 1], ['<74 hours ago', 2, 0, 0], ['<75 hours ago', 2, 0, 1], ['<76 hours ago', 3, 0, 2], ['<77 hours ago', 3, 1, 2], ['<78 hours ago', 1, 1, 0], ['<79 hours ago', 2, 0, 1], ['<82 hours ago', 1, 1, 0], ['<84 hours ago', 1, 0, 1], ['<85 hours ago', 1, 0, 2], ['<91 hours ago', 1, 0, 1], ['<97 hours ago', 1, 0, 0], ['<98 hours ago', 1, 0, 1], ['<139 hours ago', 0, 1, 0], ['<51 hours ago', 0, 4, 11], ['<13 hours ago', 0, 2, 6], ['<67 hours ago', 0, 1, 1], ['<61 hours ago', 0, 32, 95], ['<65 hours ago', 0, 2, 5], ['<44 hours ago', 0, 2, 6], ['<108 hours ago', 0, 1, 0], ['<41 hours ago', 0, 2, 1]
+, ['<47 hours ago', 0, 1, 5], ['<55 hours ago', 0, 3, 6], ['<56 hours ago', 0, 6, 1], ['<68 hours ago', 0, 1, 2], ['<107 hours ago', 0, 1, 0], ['<42 hours ago', 0, 5, 5], ['<27 hours ago', 0, 1, 0], ['<53 hours ago', 0, 3, 5], ['<58 hours ago', 0, 5, 25], ['<59 hours ago', 0, 2, 15], ['<82 hours ago', 0, 1, 0], ['<78 hours ago', 0, 1, 0], ['<120 hours ago', 0, 1, 1], ['<50 hours ago', 0, 5, 7], ['<113 hours ago', 0, 1, 0], ['<57 hours ago', 0, 11, 15], ['<62 hours ago', 0, 2, 13], ['<52 hours ago', 0, 1, 11], ['<54 hours ago', 0, 2, 6], ['<117 hours ago', 0, 1, 2], ['<36 hours ago', 0, 2, 1], ['<60 hours ago', 0, 17, 74], ['<49 hours ago', 0, 2, 3], ['<45 hours ago', 0, 3, 5], ['<77 hours ago', 0, 1, 2], ['<25 hours ago', 0, 0, 1], ['<135 hours ago', 0, 0, 1], ['<84 hours ago', 0, 0, 1], ['<63 hours ago', 0, 0, 7], ['<80 hours ago', 0, 0, 2], ['<51 hours ago', 0, 0, 11], ['<40 hours ago', 0, 0, 3], ['<85 hours ago', 0, 0, 2], ['<13 hours ago', 0, 0, 6], ['<163 hours ago', 0, 0, 1], ['<38 hours ago', 0, 0, 1],
+ ['<71 hours ago', 0, 0, 3], ['<67 hours ago', 0, 0, 1], ['<98 hours ago', 0, 0, 1], ['<20 hours ago', 0, 0, 1], ['<35 hours ago', 0, 0, 5], ['<29 hours ago', 0, 0, 1], ['<140 hours ago', 0, 0, 2], ['<39 hours ago', 0, 0, 3], ['<54 hours ago', 0, 0, 6], ['<79 hours ago', 0, 0, 1], ['<43 hours ago', 0, 0, 4], ['<104 hours ago', 0, 0, 1], ['<147 hours ago', 0, 0, 2], ['<44 hours ago', 0, 0, 6], ['<86 hours ago', 0, 0, 1], ['<153 hours ago', 0, 0, 1], ['<167 hours ago', 0, 0, 3], ['<41 hours ago', 0, 0, 1], ['<99 hours ago', 0, 0, 2], ['<47 hours ago', 0, 0, 5], ['<72 hours ago', 0, 0, 1], ['<55 hours ago', 0, 0, 6], ['<70 hours ago', 0, 0, 2], ['<31 hours ago', 0, 0, 1], ['<76 hours ago', 0, 0, 2], ['<4 hours ago', 0, 0, 2], ['<118 hours ago', 0, 0, 1], ['<166 hours ago', 0, 0, 1], ['<61 hours ago', 0, 0, 95], ['<60 hours ago', 0, 0, 74], ['<32 hours ago', 0, 0, 3], ['<143 hours ago', 0, 0, 1], ['<64 hours ago', 0, 0, 1], ['<66 hours ago', 0, 0, 3], ['<94 hours ago', 0, 0, 1], ['<93 hours ago', 0, 0, 3], ['<42 hours ago', 0, 0, 5], ['<53 hours ago', 0, 0, 5], ['<58 hours ago', 0, 0, 25], ['<89 hours ago', 0, 0, 2], ['<69 hours ago', 0, 0, 1], ['<75 hours ago', 0, 0, 1], ['<59 hours ago', 0, 0, 15], ['<48 hours ago', 0, 0, 3], ['<123 hours ago', 0, 0, 2], ['<91 hours ago', 0, 0, 1], ['<119 hours ago', 0, 0, 1], ['<37 hours ago', 0, 0, 1], ['<22 hours ago', 0, 0, 1], ['<56 hours ago', 0, 0, 1], ['<148 hours ago', 0, 0, 1], ['<90 hours ago', 0, 0, 1], ['<120 hours ago', 0, 0, 1], ['<50 hours ago', 0, 0, 7], ['<73 hours ago', 0, 0, 3], ['<57 hours ago', 0, 0, 15], ['<138 hours ago', 0, 0, 1], ['<62 hours ago', 0, 0, 13], ['<52 hours ago', 0, 0, 11], ['<68 hours ago', 0, 0, 2], ['<18 hours ago', 0, 0, 1], ['<117 hours ago', 0, 0, 2], ['<161 hours ago', 0, 0, 1], ['<36 hours ago', 0, 0, 1], ['<46 hours ago', 0, 0, 4], ['<49 hours ago', 0, 0, 3], ['<6 hours ago', 0, 0, 2], ['<45 hours ago', 0, 0, 5], ['<115 hours ago', 0, 0, 1], ['<116 hours ago', 0, 0, 2], ['<77 hours ago', 0, 0, 2], ['<34 hours ago', 0, 0, 1], ['<65 hours ago', 0, 0, 5]]
+);*/
+[['time', 'pos', 'neg', 'neu'], ['4', 4, 0, 0], ['14', 2, 2, 6], ['16', 2, 0, 0], ['17', 1, 0, 0], ['18', 1, 0, 1], ['19', 2, 0, 0], ['21', 2, 0, 0], ['24', 1, 0, 0], ['25', 1, 0, 1], ['26', 1, 0, 0], ['32', 2, 0, 2], ['35', 4, 0, 5], ['40', 1, 0, 0], ['41', 1, 1, 3], ['43', 2, 1, 7], ['44', 2, 2, 5], ['45', 7, 2, 7], ['46', 3, 1, 3], ['47', 6, 1, 3], ['48', 10, 0, 5], ['49', 9, 1, 3], ['50', 6, 5, 5], ['51', 8, 3, 13], ['52', 13, 3, 9], ['53', 7, 2, 8], ['54', 6, 3, 4], ['55', 7, 2, 5], ['56', 5, 7, 4], ['57', 12, 3, 10], ['58', 40, 13, 29], ['59', 14, 1, 11], ['60', 37, 7, 28], ['61', 144, 40, 130], ['62', 11, 5, 24], ['63', 5, 0, 8], ['64', 1, 0, 5], ['65', 1, 2, 4], ['67', 1, 1, 2], ['68', 2, 0, 1], ['69', 2, 1, 2], ['70', 2, 0, 2], ['71', 2, 0, 3], ['72', 4, 0, 0], ['73', 2, 0, 1], ['74', 2, 0, 3], ['75', 1, 0, 1], ['76', 4, 0, 2], ['77', 2, 0, 2], ['78', 2, 2, 0], ['79', 2, 0, 0], ['82', 1, 1, 0], ['84', 1, 0, 1], ['86', 1, 0, 2], ['91', 1, 0, 0], ['97', 1, 0, 0], ['98', 1, 0, 0], ['107', 1, 1, 0], 
+['111', 1, 0, 0], ['115', 1, 0, 1], ['125', 1, 0, 0], ['140', 1, 0, 0], ['141', 2, 0, 2], ['142', 1, 0, 0], ['157', 1, 0, 0], ['161', 1, 0, 1]]);
+ 
         var options = {
           title: 'Opinion types through the time..'
         };
-  google.load("visualization", "1", {packages: ["corechart"]});
+
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
     </script>
--->
+
 <script type="text/javascript">
     
-    // Load the Visualization API and the piechart package.
+/*    // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', {'packages':['corechart']});
       
     // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(createCharts);
-    
-    function createCharts() {
-    drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
-    console.log('ANM-HERE: Pos'+{{stats.0.pos}}+'Neutral: '+{{stats.0.neutral}}+'Neg: '+{{stats.0.neg}});
-    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}} + 'Error:' + {{stats.1.error}} );
-    console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
-    //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
-    drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
-    }
+    google.setOnLoadCallback(drawChart);
     
     // Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
-    function drawChart(destino, value1, value2, value3) {
-    
-    // Create the data table.
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Sentiment');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-    ['Positive', value1],
-    ['Neutral', value2],
-    ['Negative', value3],
-    ]);
-    
-    // Set chart options
-    var options = {
-    'title':'Differently Opinionated Tweets on a timestamp',
-    'is3D':true,
-    'width':300,
-    'height':210,
-    'backgroundColor': { 'fill': "#BEBEBE" }
-    };
-    
+    function drawChart() {
+    var data = google.visualization.arrayToDataTable(stats);
 
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.LineChart(document.getElementById(destino));
-    chart.draw(data, options);
-    }
+        var options = {
+          title: 'Opinion Time Distribution'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+
+    }*/
   </script>
 
 

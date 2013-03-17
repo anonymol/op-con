@@ -6,8 +6,8 @@ import math
 #python_data = [u'steve@gmail.com']
 #json_string = json.dumps(data)
 
-def parseMined(timeDelta):
-  f=open("samsungs4miner.json","r")
+def parseMined(timeDelta, unit):
+  f=open("/media/110GBPart/SOURCE/twittermining/op-con/src/realtime/samsungs4miner.json","r")
 
   now = datetime.datetime.utcnow()
   pos={}
@@ -24,7 +24,7 @@ def parseMined(timeDelta):
 	tweetTime = datetime.datetime.combine(d, t)
 	delta = (now - tweetTime)
 	dt=(delta.seconds + delta.days*86400)/timeDelta
-	key=str(int(math.ceil(dt)))
+	key='<'+str(int(math.ceil(dt)))+' '+unit+ ' ago'
 	retdt=None
 	if(m[6]=='pos'):
 	  retdt=pos
@@ -48,7 +48,7 @@ def parseMined(timeDelta):
     if key in neu.keys():
       neuv=neu[key]
     fin.append([key,posv,negv,neuv])
-  """for key in neg.keys():
+  for key in neg.keys():
     posv=0
     negv=neg[key]
     neuv=0
@@ -59,19 +59,7 @@ def parseMined(timeDelta):
     posv=0
     negv=0
     neuv=neu[key]
-    fin.append([key,posv,negv,neuv])"""
-  
-  for i in xrange(1,len(fin)-1):
-    temp=None
-    for j in xrange(1,len(fin)-i):
-      if(int(fin[j][0])>int(fin[j+1][0])):
-	temp=fin[j]
-	fin[j]=fin[j+1]
-	fin[j+1]=temp
-  return fin.reverse()
-print parseMined(3600);
-
-"""
-match=re.findall(r'[0-9]*',fin[i][0])
-num=match[0]
-"""
+    fin.append([key,posv,negv,neuv])
+  return fin
+    
+print parseMined(3600,'hours');
