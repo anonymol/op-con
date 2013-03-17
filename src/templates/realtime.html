@@ -17,54 +17,6 @@
     }
   </script>
   
-  <script type="text/javascript">
-    
-    // Load the Visualization API and the piechart package.
-    google.load('visualization', '1.0', {'packages':['corechart']});
-      
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(createCharts);
-    
-    function createCharts() {
-    drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
-    console.log('ANM-HERE: Pos'+{{stats.0.pos}}+'Neutral: '+{{stats.0.neutral}}+'Neg: '+{{stats.0.neg}});
-    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}});
-    //console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
-    //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
-    //drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
-    }
-    
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
-    function drawChart(destino, value1, value2, value3) {
-    
-    // Create the data table.
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Sentiment');
-    data.addColumn('number', 'Slices');
-    data.addRows([
-    ['Positive', value1],
-    ['Neutral', value2],
-    ['Negative', value3],
-    ]);
-    
-    // Set chart options
-    var options = {
-    'title':'Mood Distribution',
-    'is3D':true,
-    'width':343,
-    'height':200,
-    'backgroundColor': { 'fill': "#BEBEBE" }
-    };
-    
-    // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById(destino));
-    chart.draw(data, options);
-    }
-  </script>
-  
-  
   
   <body>
     <div id="titulo" style="display: none;">
@@ -89,13 +41,6 @@
 
 
 
-
-
-
-
-
-    
-    
     <div id="lateral-esquerda">
       
       <div id="top_list">
@@ -148,6 +93,53 @@
       </div> 
     </div>
     
+<script type="text/javascript">
+    
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
+      
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(createCharts);
+    
+    function createCharts() {
+    drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
+    console.log('ANM-HERE: Pos'+{{stats.0.pos}}+'Neutral: '+{{stats.0.neutral}}+'Neg: '+{{stats.0.neg}});
+    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}});
+    //console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
+    //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
+    //drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
+    }
+    
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart(destino, value1, value2, value3) {
+    
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Sentiment');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+    ['Positive', value1],
+    ['Neutral', value2],
+    ['Negative', value3],
+    ]);
+    
+    // Set chart options
+    var options = {
+    'title':'Mood Distribution',
+    'is3D':true,
+    'width':300,
+    'height':210,
+    'backgroundColor': { 'fill': "#BEBEBE" }
+    };
+    
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById(destino));
+    chart.draw(data, options);
+    }
+  </script>
+
     <div id="centro">
       <div id="titulo-centro" class="subtitulo">Tweets</div>
       <div id="nada" style="text-align: center; color: #666; padding: 10px; background: #ebebeb; 
@@ -169,7 +161,7 @@
 	  
 	  <div class="texto">
 	    {{ tweet.text }}<br/>
-	    @<a href="http://www.google.com" target="_blank">{{ tweet.user }}</a> :: {{ tweet.date }}
+	    @<a href="http://www.twitter.com/{{tweet.user}}" target="_blank">{{ tweet.user }}</a> :: {{ tweet.date }}
 	  </div>
 </li>
 {% endif %}

@@ -30,6 +30,7 @@ def get_realtime_tweets(query, size=500, get_realtime=True):
                     'image'     : status.profile_image_url_https,
                     'text'      : status.text.replace('\r', '').replace('\n', ''),
                     'tweet_id'  : status.id_str,
+                    'geo'       : status.geo,
                     'date'      : status.created_at
                     }
             

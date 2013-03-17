@@ -1,3 +1,12 @@
+svg{
+    position: absolute;
+    width: 270px;
+    margin-top: 15px;
+    min-height: 200px;
+    margin-left: 865px;
+    margin-right: 5px;
+    float: right;
+}
 
 body {
 	margin-top: 0;
@@ -17,6 +26,7 @@ body {
 	
 	-webkit-border-radius: 25px;
 }
+
 
 #div-propaganda {
 	text-align: center;

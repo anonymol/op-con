@@ -31,7 +31,8 @@ def realtime(request):
                  'stats'        : stats,
                  'top_words'    : top_words,
                  'top_hashtags' : top_hashtags,
-                 'top_users'    : top_users
+                 'top_users'    : top_users,
+#                 'geo'          : 
                  }
             
             return util.request.render('realtime.html', d, request)
