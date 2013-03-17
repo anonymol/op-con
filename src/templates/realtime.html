@@ -107,7 +107,7 @@
     //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}} + 'Error:' + {{stats.1.error}} );
     console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
     //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
-    drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
+    drawChart1('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
     }
     
     // Callback that creates and populates a data table,
@@ -127,7 +127,33 @@
     
     // Set chart options
     var options = {
-    'title':'Opinion Distribution',
+    'title':'Opinion Distribution for Algo1',
+    'is3D':true,
+    'width':300,
+    'height':210,
+    'backgroundColor': { 'fill': "#BEBEBE" }
+    };
+    
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(document.getElementById(destino));
+    chart.draw(data, options);
+    }
+
+    function drawChart1(destino, value1, value2, value3) {
+    
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Sentiment');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+    ['Positive', value1],
+    ['Neutral', value2],
+    ['Negative', value3],
+    ]);
+    
+    // Set chart options
+    var options = {
+    'title':'Opinion Distribution for Algo2',
     'is3D':true,
     'width':300,
     'height':210,
