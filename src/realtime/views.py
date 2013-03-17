@@ -14,7 +14,7 @@ def realtime(request):
         
         if query:
             tweets = control.get_realtime_tweets(query + " -filter:links -RT -@", 100, True)            
-            tweets_analysed = processing.control.analysis_sentimental(tweets, query, number=10, d1=True, d2=True, d3=True)
+            tweets_analysed = processing.control.analysis_sentimental(tweets, query, number=10, d1=False, d2=True, d3=True)
             
             stats = processing.control.stats_analysis(tweets_analysed)
             

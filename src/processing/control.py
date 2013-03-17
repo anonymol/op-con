@@ -6,7 +6,20 @@ import socket
 import util
 import threading
 import time
+import math
+import re
+from libs.textprocessing.TextProcessing import TextProcessing 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
+# AFINN-111 is as of June 2011 the most recent version of AFINN
+filenameAFINN = '/media/110GBPart/SOURCE/twittermining/op-con/src/processing/AFINN111.txt'
+afinn = dict(map(lambda (w, s): (w, int(s)), [ 
+            ws.strip().split('\t') for ws in open(filenameAFINN) ]))
+
+# Word splitter pattern
+pattern_split = re.compile(r"\W+")
 
 ignore_words = ['the', 'this', 'that', 'for', 'and',"'ve","'re","'m","'s"]
 
@@ -72,9 +85,9 @@ def analise(tweets_list, query, my_queue, d1, d2, d3):
         text_without_accents = util.remover_acentos(tweet['text'])
         
         if text_without_accents:        
-            analise1 = alchemy.classifyAlchemyAPI(text_without_accents) if d1 else {'label' : 'off'}
-            analise2 = analyse_affin(text_without_accents, query) if d2 else {'label' : 'off'}
-            analise3 = analyse_bayes(text_without_accents, query) if d3 else {'label' : 'off'}
+            analise1 = analyse_affin(text_without_accents) if d3 else {'label' : 'off'}#alchemy.classifyAlchemyAPI(text_without_accents) if d1 else {'label' : 'off'}
+            analise2 = analyse_textprocessing(text_without_accents) if d2 else {'label' : 'off'}
+            analise3 = analyse_affin(text_without_accents) if d3 else {'label' : 'off'}
             
             my_queue.put((tweet, analise1, analise2, analise3))
         
@@ -97,53 +110,28 @@ def analysis_sentimental(tweets_list, query, number=2, d1=True, d2=True, d3=True
     
     return lista
 
-def analyse_affin(text, query):
-    import ast
-    
-    HOST = 'localhost'    # The remote host
-    PORT = 7001           # The same port as used by the server
-    
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((HOST, PORT))
-        s.sendall(str(text) + '.:.' + query)
-        data = s.recv(1024)
-        s.close()
-    except Exception:
-        return {'label' : 'error'}
-    
-    return ast.literal_eval(data)
+def analyse_affin(text):
+  words = pattern_split.split(text.lower())
+  sentiments = map(lambda word: afinn.get(word, 0), words)
+  if sentiments:
+    # How should you weight the individual word sentiments? 
+    # You could do N, sqrt(N) or 1 for example. Here I use sqrt(N)
+    sentiment = float(sum(sentiments))/math.sqrt(len(sentiments))
+  else:
+    sentiment = 0
+  if(sentiment>0):
+    return {'label' : 'pos'}
+  elif(sentiment==0):
+    return {'label' : 'neutral'}
+  return {'label' : 'neg'}
 
-def analyse_bayes(text, query):
-    import ast
-    
-    HOST = 'localhost'    # The remote host
-    PORT = 7002           # The same port as used by the server
-    
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((HOST, PORT))
-        s.sendall(str(text))
-        data = s.recv(1024)
-        s.close()
-    except Exception:
-        return {'label' : 'error'}
-    
-    return ast.literal_eval(data)
-
-def analyse_bayes_csv(text, query):
-    import ast
-    
-    HOST = 'localhost'    # The remote host
-    PORT = 7003           # The same port as used by the server
-    
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((HOST, PORT))
-        s.sendall(str(text))
-        data = s.recv(1024)
-        s.close()
-    except Exception:
-        return {'label' : 'error'}
-    
-    return ast.literal_eval(data)
+def analyse_textprocessing(text):
+  if not text:
+    return None
+   
+  obj = TextProcessing("PUBqD=D4=4KKr4WvOfxh#VMkayw$W-iO", "PRI-@KOUBovv#gV-cPGC3wd$%P2fYU3k")
+   
+  try:
+    return obj.sentiment(util.remover_acentos(text))
+  except Exception:
+    return {'label' : 'erro'}
