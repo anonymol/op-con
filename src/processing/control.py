@@ -13,14 +13,6 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-# AFINN-111 is as of June 2011 the most recent version of AFINN
-filenameAFINN = '/media/110GBPart/SOURCE/twittermining/op-con/src/processing/AFINN111.txt'
-afinn = dict(map(lambda (w, s): (w, int(s)), [ 
-            ws.strip().split('\t') for ws in open(filenameAFINN) ]))
-
-# Word splitter pattern
-pattern_split = re.compile(r"\W+")
-
 ignore_words = ['the', 'this', 'that', 'for', 'and',"'ve","'re","'m","'s"]
 
 def top_words(tweets_list, number=10):
@@ -85,14 +77,14 @@ def analise(tweets_list, query, my_queue, d1, d2, d3):
         text_without_accents = util.remover_acentos(tweet['text'])
         
         if text_without_accents:        
-            analise1 = analyse_affin(text_without_accents) if d3 else {'label' : 'off'}#alchemy.classifyAlchemyAPI(text_without_accents) if d1 else {'label' : 'off'}
+            analise1 = alchemy.classifyAlchemyAPI(text_without_accents) if d1 else {'label' : 'off'}
             analise2 = analyse_textprocessing(text_without_accents) if d2 else {'label' : 'off'}
             analise3 = analyse_affin(text_without_accents) if d3 else {'label' : 'off'}
             
             my_queue.put((tweet, analise1, analise2, analise3))
         
         else:
-            my_queue.put((tweet, {'label' : 'erro'}, {'label' : 'erro'}, {'label' : 'erro'}))
+            my_queue.put((tweet, {'label' : 'error'}, {'label' : 'error'}, {'label' : 'error'}))
 
 def analysis_sentimental(tweets_list, query, number=2, d1=True, d2=True, d3=True):    
     from Queue import Queue 
@@ -111,6 +103,13 @@ def analysis_sentimental(tweets_list, query, number=2, d1=True, d2=True, d3=True
     return lista
 
 def analyse_affin(text):
+  # AFINN-111 is as of June 2011 the most recent version of AFINN
+  filenameAFINN = '/media/110GBPart/SOURCE/twittermining/op-con/src/processing/AFINN111.txt'
+  afinn = dict(map(lambda (w, s): (w, int(s)), [ ws.strip().split('\t') for ws in open(filenameAFINN) ]))
+
+  # Word splitter pattern
+  pattern_split = re.compile(r"\W+")
+
   words = pattern_split.split(text.lower())
   sentiments = map(lambda word: afinn.get(word, 0), words)
   if sentiments:
@@ -128,10 +127,9 @@ def analyse_affin(text):
 def analyse_textprocessing(text):
   if not text:
     return None
-   
+    
   obj = TextProcessing("PUBqD=D4=4KKr4WvOfxh#VMkayw$W-iO", "PRI-@KOUBovv#gV-cPGC3wd$%P2fYU3k")
-   
   try:
-    return obj.sentiment(util.remover_acentos(text))
+    return obj.sentiment(text)
   except Exception:
-    return {'label' : 'erro'}
+    return {'label' : 'error'}

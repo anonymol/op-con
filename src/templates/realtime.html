@@ -104,10 +104,10 @@
     function createCharts() {
     drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
     console.log('ANM-HERE: Pos'+{{stats.0.pos}}+'Neutral: '+{{stats.0.neutral}}+'Neg: '+{{stats.0.neg}});
-    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}});
-    //console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
+    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}} + 'Error:' + {{stats.1.error}} );
+    console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
     //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
-    //drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
+    drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
     }
     
     // Callback that creates and populates a data table,
@@ -127,7 +127,7 @@
     
     // Set chart options
     var options = {
-    'title':'Mood Distribution',
+    'title':'Opinion Distribution',
     'is3D':true,
     'width':300,
     'height':210,
