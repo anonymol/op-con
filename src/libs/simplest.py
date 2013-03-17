@@ -27,26 +27,12 @@ def sentiment(text):
     else:
         sentiment = 0
     return sentiment
-
-
-
-if __name__ == '__main__':
-    text = "Charlie Shee is stupid and idiotic"
-    print("\n%6.2f %s" % (sentiment(text), text))
-    print "\nSingle sentence example. Press Enter to continue.. "
-    raw_input()
     
-    text = "Charlie Shee is only a tiny bit stupid and not idiotic"
-    print("%6.2f %s" % (sentiment(text), text))
-    print "\nNo negation and booster words handled in this approach. Press enter to cont..."
-    raw_input()
-   
-
     # Example with downloading from Twitter:
-    import simplejson
+    """import simplejson
     import urllib
 
     query = raw_input("enter your query for live search: ")
     json = simplejson.load(urllib.urlopen("http://search.twitter.com/search.json?q=" + query))
     sentiments = map(sentiment, [ tweet['text'] for tweet in json['results'] ])
-    print("%6.2f %s" % (sum(sentiments)/math.sqrt(len(sentiments)), query))
+    print("%6.2f %s" % (sum(sentiments)/math.sqrt(len(sentiments)), query))"""

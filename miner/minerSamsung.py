@@ -1,20 +1,29 @@
 import tweepy
 from datetime import datetime
+import json
+
 tweets=[]
+f=open("samsungs4miner.json","a")
+
+tweetids=[]
+tweetidsfile=None
+
+try:
+  tweetidsfile=open(".addedTweets")
+  tweetids=json.load(tweetidsfile)
+except IOError as e:
+  pass
+
 for status in tweepy.Cursor(tweepy.API().search,q='#samsungs4' , rpp=100, lang="en").items(100):
-    d={ 'user' : status.from_user,
-        'user_id'   : status.from_user_id_str,
-        'image'     : status.profile_image_url_https,
-        'text'      : status.text.replace('\r', '').replace('\n', ''),
+    if(status.id_str not in tweetids):
+      d={ 'text'      : status.text.replace('\r', '').replace('\n', ''),
         'tweet_id'  : status.id_str,
-        'geo'       : status.geo,
         'date'      : status.created_at
         }
-    tweets.append(d)
-f=open("samsungs4.json","a")
-f.write("%s"%datetime.now())
-f.write("\n")
+      tweets.append(d)
+      tweetids.append(status.id_str)
+
 for item in tweets:
     f.write("%s\n"%item)
-f.write("\n")
+
 f.close()
