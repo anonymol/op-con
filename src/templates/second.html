@@ -1,7 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-  <head>
-    <title>Presently mined data and its timestamp representation</title>
-    <link href="/static/style.css" rel="stylesheet" type="text/css" media="screen"/>
+       <h1>Presently mined data and its timestamp representation</h1>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
+  
+  <!--Load the AJAX API-->
+<!--
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1.0", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+      [Hours', 'Positive', 'Negative', 'Neutral'],
+      ['1','37','40', '23'],
+          ['2', '34','11', '55'],
+          ['3','57','19', '24'],
+          ['4',  '63', '14', '23']
+        ]);
 
+        var options = {
+          title: 'Opinion types through the time..'
+        };
+  google.load("visualization", "1", {packages: ["corechart"]});
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+-->
+<script type="text/javascript">
+    
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
+      
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(createCharts);
+    
+    function createCharts() {
+    drawChart('chart_div1', {{stats.0.pos}}, {{stats.0.neutral}}, {{stats.0.neg}});
+    console.log('ANM-HERE: Pos'+{{stats.0.pos}}+'Neutral: '+{{stats.0.neutral}}+'Neg: '+{{stats.0.neg}});
+    //console.log('ANM-HERE: Pos'+{{stats.1.pos}}+'Neutral: '+{{stats.1.neutral}}+'Neg: '+{{stats.1.neg}} + 'Error:' + {{stats.1.error}} );
+    console.log('ANM-HERE: Pos'+{{stats.2.pos}}+'Neutral: '+{{stats.2.neutral}}+'Neg: '+{{stats.2.neg}});
+    //drawChart('chart_div2', {{stats.1.pos}}, {{stats.1.neutral}}, {{stats.1.neg}});
+    drawChart('chart_div3', {{stats.2.pos}}, {{stats.2.neutral}}, {{stats.2.neg}});
+    }
+    
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart(destino, value1, value2, value3) {
+    
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Sentiment');
+    data.addColumn('number', 'Slices');
+    data.addRows([
+    ['Positive', value1],
+    ['Neutral', value2],
+    ['Negative', value3],
+    ]);
+    
+    // Set chart options
+    var options = {
+    'title':'Differently Opinionated Tweets on a timestamp',
+    'is3D':true,
+    'width':300,
+    'height':210,
+    'backgroundColor': { 'fill': "#BEBEBE" }
+    };
+    
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.LineChart(document.getElementById(destino));
+    chart.draw(data, options);
+    }
+  </script>
+
+
+<body>
+
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    This contains a regularly updated information of previously mined tweets
+  </body>
 </html>
