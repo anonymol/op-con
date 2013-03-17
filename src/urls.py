@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     
     (r'^$', 'realtime.views.home'),
     (r'^realtime$', 'realtime.views.realtime'),
-    
+    (r'^second$', 'realtime.views.second'),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 )

@@ -8,6 +8,10 @@ def home(request):
     if request.method == 'GET':
         return util.request.render('index.html', {}, request)
 
+def second(request):
+    if request.method == 'GET':
+        return util.request.render('second.html', {}, request)
+
 def realtime(request):
     if request.method == 'GET':
         query = request.GET.get('q', None)
